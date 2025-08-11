@@ -14,7 +14,21 @@ class ElectronSystemService {
     return dispatch('getDesktopAppState');
   }
 
-  // Add other system-related service methods here if needed in the future
+  async closeWindow(): Promise<void> {
+    return dispatch('closeWindow');
+  }
+
+  async maximizeWindow(): Promise<void> {
+    return dispatch('maximizeWindow');
+  }
+
+  async minimizeWindow(): Promise<void> {
+    return dispatch('minimizeWindow');
+  }
+
+  showContextMenu = async (type: string, data?: any) => {
+    return dispatch('showContextMenu', { data, type });
+  };
 }
 
 // Export a singleton instance of the service

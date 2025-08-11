@@ -44,6 +44,15 @@ export default {
     reasoningBudgetToken: {
       title: '思考消耗 Token',
     },
+    reasoningEffort: {
+      title: '推理强度',
+    },
+    textVerbosity: {
+      title: '输出文本详细程度',
+    },
+    thinking: {
+      title: '深度思考开关',
+    },
     title: '模型扩展功能',
   },
   history: {

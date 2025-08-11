@@ -1,8 +1,9 @@
 'use client';
 
-import { Button, Card, Divider, Typography } from 'antd';
+import { Button, Text } from '@lobehub/ui';
+import { Card, Divider } from 'antd';
 import { createStyles } from 'antd-style';
-import React, { memo } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Center, Flexbox } from 'react-layout-kit';
 
@@ -20,8 +21,6 @@ interface ClientProps {
   scopes: string[];
   uid: string;
 }
-
-const { Title, Text, Paragraph } = Typography;
 
 const useStyles = createStyles(({ css, token }) => ({
   authButton: css`
@@ -105,6 +104,7 @@ const useStyles = createStyles(({ css, token }) => ({
   `,
   title: css`
     margin-block-end: ${token.marginLG}px;
+    font-size: 24px;
     color: ${token.colorTextBase};
     text-align: center;
   `,
@@ -122,6 +122,8 @@ const ConsentClient = memo<ClientProps>(
     const { styles, theme } = useStyles();
     const { t } = useTranslation('oauth');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const clientDisplayName = clientMetadata?.clientName || clientId;
     return (
       <Center className={styles.container} gap={16}>
@@ -131,17 +133,17 @@ const ConsentClient = memo<ClientProps>(
             isFirstParty={clientMetadata.isFirstParty}
             logoUrl={clientMetadata.logo}
           />
-          <Title className={styles.title} level={3}>
+          <Text as={'h3'} className={styles.title}>
             {t('consent.title', { clientName: clientDisplayName })}
-          </Title>
+          </Text>
         </Flexbox>
         <Card className={styles.card}>
           <Flexbox gap={8}>
             <Flexbox gap={12}>
-              <Paragraph>{t('consent.description', { clientName: clientDisplayName })}</Paragraph>
+              <Text>{t('consent.description', { clientName: clientDisplayName })}</Text>
 
               <div className={styles.scopes}>
-                <Paragraph type={'secondary'}>{t('consent.permissionsTitle')}</Paragraph>
+                <Text type={'secondary'}>{t('consent.permissionsTitle')}</Text>
                 {scopes.map((scope) => (
                   <div className={styles.scope} key={scope}>
                     <Text>{getScopeDescription(scope, t)}</Text>
@@ -165,7 +167,11 @@ const ConsentClient = memo<ClientProps>(
                     <Button
                       className={styles.authButton}
                       htmlType="submit"
+                      loading={isLoading}
                       name="consent"
+                      onClick={() => {
+                        setIsLoading(true);
+                      }}
                       type="primary"
                       value="accept"
                     >
